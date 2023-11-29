@@ -1,10 +1,5 @@
-﻿using System.Linq;
-using Content.Shared.Body.Part;
-using Content.Shared.Body.Systems;
-using Content.Shared.Containers;
+﻿using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
-using Content.Shared.Medical.Wounds.Components;
-using Content.Shared.Rejuvenate;
 using Content.Shared.Throwing;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
@@ -23,7 +18,6 @@ public partial class WoundSystem : EntitySystem
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
-    [Dependency] private readonly ThrowingSystem _throwing = default!;
 
 
     public override void Initialize()
