@@ -4,11 +4,9 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototy
 
 namespace Content.Shared.Medical.Treatments.Prototypes;
 
-
 [Prototype("treatment")]
 public sealed class TreatmentPrototype : IPrototype
 {
-
     [IdDataField] public string ID { get; init; } = string.Empty;
 
     [DataField("repeatable")] public bool Repeatable = false;
@@ -23,5 +21,4 @@ public sealed class TreatmentPrototype : IPrototype
 
     [DataField("allowedWounds", required: true, customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
     public HashSet<EntityPrototype> AllowedWounds = new();
-
 }
