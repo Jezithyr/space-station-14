@@ -1874,13 +1874,31 @@ namespace Content.Shared.CCVar
         ///How many times per second do we want to heal wounds (default, once every 2 seconds)
         /// </summary>
         public static readonly CVarDef<float> MedicalHealingTickrate =
-            CVarDef.Create("medical.heal_tickrate", 0.5f, CVar.SERVER | CVar.REPLICATED);
+            CVarDef.Create("medical.heal_tick_rate", 0.5f, CVar.SERVER | CVar.REPLICATED);
 
         /// <summary>
         ///How much do we want to multiply healing values by
         /// </summary>
         public static readonly CVarDef<float> MedicalHealingMultiplier =
             CVarDef.Create("medical.heal_mult", 1f, CVar.SERVER | CVar.REPLICATED);
+
+        /// <summary>
+        ///How many times per second do we want to tick organs (default, once every 2 seconds)
+        /// </summary>
+        public static readonly CVarDef<float> MedicalOrganTickrate =
+            CVarDef.Create("medical.organ_tick_rate", 0.5f, CVar.SERVER | CVar.REPLICATED);
+
+        /// <summary>
+        ///How many times per second do we want to tick organs (default, once every 2 seconds)
+        /// </summary>
+        public static readonly CVarDef<float> MedicalOrganDecayMultiplier =
+            CVarDef.Create("medical.organ_decay_rate", 0.5f, CVar.SERVER | CVar.REPLICATED);
+
+        /// <summary>
+        ///How much do we want to multiply values by when updating
+        /// </summary>
+        public static readonly CVarDef<float> MedicalOrganMultiplier =
+            CVarDef.Create("medical.organ_mult", 1f, CVar.SERVER | CVar.REPLICATED);
 
         /*
          * Miscellaneous
