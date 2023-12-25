@@ -10,11 +10,8 @@ namespace Content.Client.UserInterface.Systems.Medical.Controls;
 [GenerateTypedNameReferences]
 public sealed partial class WoundableEntry : BoxContainer
 {
-    public WoundableEntry(string woundableName, string severity, Color severityColor)
+    public WoundableEntry()
     {
         RobustXamlLoader.Load(this);
-        WoundableName.Name = woundableName;
-        Severity.Text = severity;
-        Severity.FontColorOverride = severityColor;
     }
 }

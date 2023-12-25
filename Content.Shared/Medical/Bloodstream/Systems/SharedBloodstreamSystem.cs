@@ -6,9 +6,7 @@ namespace Content.Shared.Medical.Bloodstream.Systems;
 
 public abstract class SharedBloodstreamSystem : EntitySystem
 {
-
-
-    public void ApplyBleed(EntityUid target, FixedPoint2 bleedAmount, BloodstreamComponent? bloodstream)
+    public void ApplyBleed(EntityUid target, FixedPoint2 bleedAmount, BloodstreamNewComponent? bloodstream)
     {
         if (!Resolve(target, ref bloodstream))
             return;
@@ -20,18 +18,17 @@ public abstract class SharedBloodstreamSystem : EntitySystem
         Dirty(target, bloodstream);
     }
 
-    public virtual void OnUpdateBloodLevel(EntityUid target, BloodstreamComponent bloodstreamComponent,
+    public virtual void OnUpdateBloodLevel(EntityUid target, BloodstreamNewComponent legacyBloodstreamComponent,
         FixedPoint2 oldVolume, FixedPoint2 newVolume)
     {
     }
 
-    public virtual void HandleSpillBlood(EntityUid target, BloodstreamComponent bloodstream, Solution spiltSolution){}
+    public virtual void HandleSpillBlood(EntityUid target, BloodstreamNewComponent legacyBloodstream, Solution spiltSolution){}
 
-    protected void ApplyBleeds(EntityUid target, BloodstreamComponent bloodstream)
+    protected void ApplyBleeds(EntityUid target, BloodstreamNewComponent legacyBloodstream)
     {
-        var oldBloodVolume = bloodstream.BloodSolution.Volume;
-        HandleSpillBlood(target, bloodstream, bloodstream.BloodSolution.SplitSolution(bloodstream.BleedRate));
-        OnUpdateBloodLevel(target, bloodstream, oldBloodVolume, bloodstream.BloodSolution.Volume);
+        var oldBloodVolume = legacyBloodstream.BloodSolution.Volume;
+        HandleSpillBlood(target, legacyBloodstream, legacyBloodstream.BloodSolution.SplitSolution(legacyBloodstream.BleedRate));
+        OnUpdateBloodLevel(target, legacyBloodstream, oldBloodVolume, legacyBloodstream.BloodSolution.Volume);
     }
-
 }

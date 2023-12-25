@@ -7,7 +7,7 @@
     VerticalExpand="False"
     Orientation="Vertical"
 >
-    <controls1:VSpacer Size="10"/>
+    <controls1:VSpacer/>
     <PanelContainer>
         <BoxContainer Orientation="Horizontal" Align="Center">
             <Label Name = "WoundableName" Text = "Unknown Woundable"/>

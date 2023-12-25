@@ -1,6 +1,7 @@
 ﻿using Content.Shared.FixedPoint;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
 
 namespace Content.Shared.Medical.Treatments.Prototypes;
 
@@ -19,6 +20,6 @@ public sealed class TreatmentPrototype : IPrototype
 
     //TODO: raise treatment event
 
-    [DataField("allowedWounds", required: true, customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
-    public HashSet<EntityPrototype> AllowedWounds = new();
+    //[DataField("allowedWounds", required: true, customTypeSerializer: typeof(PrototypeIdHashSetSerializer<EntityPrototype>))]
+    //public HashSet<EntityPrototype> AllowedWounds = new();
 }

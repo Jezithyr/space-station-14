@@ -1,5 +1,4 @@
 ﻿using Content.Shared.Chemistry.Components;
-using Content.Shared.Chemistry.Reagent;
 using Content.Shared.FixedPoint;
 using Content.Shared.Medical.Bloodstream.Prototypes;
 using Robust.Shared.GameStates;
@@ -8,7 +7,7 @@ using Robust.Shared.Toolshed.TypeParsers;
 namespace Content.Shared.Medical.Bloodstream.Components;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class BloodstreamComponent : Component
+public sealed partial class BloodstreamNewComponent : Component
 {
     //BloodVessel volume used to calculate blood pressure
     [DataField("totalVolume", required:true), ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
