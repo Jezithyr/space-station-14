@@ -30,7 +30,7 @@ public sealed partial class OrganComponent : Component
     public FixedPoint2 Necrosis = 0.0;
 
     /// <summary>
-    /// Decay rate per organ tick when this organ is undergoing necrosis
+    /// Decay rate per organ tick when this organ is undergoing necrosis, modified by necrosis percentage
     /// </summary>
     [DataField("decayRate"), AutoNetworkedField]
     public FixedPoint2 DecayRate = 0.0;

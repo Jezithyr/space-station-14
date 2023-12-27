@@ -18,7 +18,7 @@ public abstract class SharedBloodstreamSystem : EntitySystem
         Dirty(target, bloodstream);
     }
 
-    public virtual void OnUpdateBloodLevel(EntityUid target, BloodstreamNewComponent legacyBloodstreamComponent,
+    public virtual void UpdateBloodLevel(EntityUid target, BloodstreamNewComponent legacyBloodstreamComponent,
         FixedPoint2 oldVolume, FixedPoint2 newVolume)
     {
     }
@@ -28,7 +28,8 @@ public abstract class SharedBloodstreamSystem : EntitySystem
     protected void ApplyBleeds(EntityUid target, BloodstreamNewComponent legacyBloodstream)
     {
         var oldBloodVolume = legacyBloodstream.BloodSolution.Volume;
-        HandleSpillBlood(target, legacyBloodstream, legacyBloodstream.BloodSolution.SplitSolution(legacyBloodstream.BleedRate));
-        OnUpdateBloodLevel(target, legacyBloodstream, oldBloodVolume, legacyBloodstream.BloodSolution.Volume);
+        UpdateBloodLevel(target, legacyBloodstream, oldBloodVolume, legacyBloodstream.BloodSolution.Volume);
+        HandleSpillBlood(target, legacyBloodstream,
+            legacyBloodstream.BloodSolution.SplitSolution(legacyBloodstream.BleedRate));
     }
 }
