@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using Robust.Shared.ContentPack;
-using Robust.Shared.IoC;
+﻿using Robust.Shared.ContentPack;
 using Robust.Shared.Timing;
 
 namespace Content.Client.UI;
@@ -10,7 +8,6 @@ public class UIEntry : UIShared
 {
     public override void Init()
     {
-        Debug.WriteLine("=== HELLO WORLD ===");
     }
 
     public override void PostInit()
