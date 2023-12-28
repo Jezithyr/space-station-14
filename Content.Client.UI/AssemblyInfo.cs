@@ -1,2 +1,3 @@
-﻿using Robust.Shared.ContentPack;
-[assembly: RobustMod(ModAssemblyType.UI), HotReloadable]
+﻿using Robust.Shared.ContentModules;
+using Robust.Shared.ContentPack;
+[assembly: RobustModule("Client.UI", false)]
