@@ -71,6 +71,8 @@ namespace Content.Client.Entry
         [Dependency] private readonly IReplayLoadManager _replayLoad = default!;
         [Dependency] private readonly ILogManager _logManager = default!;
 
+        protected override string SawmillCategory => "content.client";
+
         public override void Init()
         {
             ClientContentIoC.Register();

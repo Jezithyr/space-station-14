@@ -18,6 +18,7 @@ namespace Content.Shared.Entry
     {
         [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
         [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
+        protected override string SawmillCategory => "content.shared";
 
         public override void PreInit()
         {

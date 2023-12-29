@@ -16,6 +16,8 @@ public sealed class EntryPoint : GameClient
     [Dependency] private readonly ContentReplayPlaybackManager _contentReplayPlaybackMan = default!;
     [Dependency] private readonly IClientConGroupController _conGrp = default!;
 
+    protected override string SawmillCategory => "content.replay";
+
     public override void Init()
     {
         base.Init();

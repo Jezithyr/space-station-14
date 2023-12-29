@@ -44,6 +44,8 @@ namespace Content.Server.Entry
         private IEntitySystemManager? _sysMan;
         private IServerDbManager? _dbManager;
 
+        protected override string SawmillCategory => "content.server";
+
         /// <inheritdoc />
         public override void Init()
         {
