@@ -1,4 +1,5 @@
 using Content.Shared.Chemistry.Components;
+using Content.Shared.FixedPoint;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Chemistry.Reaction;
@@ -12,6 +13,9 @@ public sealed partial class ReactionMixerComponent : Component
     [ViewVariables]
     [DataField]
     public List<ProtoId<MixingCategoryPrototype>> ReactionTypes = default!;
+
+    [DataField]
+    public FixedPoint2 ReactantVolumeCapacity = -1;
 
     [DataField]
     public MixerFullEffect MixerOverVolumeEffect = MixerFullEffect.Overflow;
@@ -32,11 +36,11 @@ public readonly record struct AfterMixingEvent(EntityUid Mixed, EntityUid Mixer)
 [ByRefEvent]
 public record struct GetMixableSolutionAttemptEvent(EntityUid Mixed, Entity<SolutionComponent>? MixedSolution = null);
 
+//this is not a boolean because in the future I will be adding bursting for organ metabolism.
+//(Don't swallow spesscoke and spentos at the same time kids)
 [Serializable]
 public enum MixerFullEffect
 {
     Prevent,
-    Nothing,
     Overflow,
-    Burst,
 }

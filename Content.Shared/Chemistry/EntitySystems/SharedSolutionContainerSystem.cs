@@ -244,7 +244,9 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="soln"></param>
     /// <param name="needsReactionsProcessing"></param>
     /// <param name="mixerComponent"></param>
-    public void UpdateChemicals(Entity<SolutionComponent> soln, bool needsReactionsProcessing = true, ReactionMixerComponent? mixerComponent = null)
+    /// <param name="maxIterations"></param>
+    public void UpdateChemicals(Entity<SolutionComponent> soln, bool needsReactionsProcessing = true, ReactionMixerComponent? mixerComponent = null,
+        int maxIterations = -1)
     {
         Dirty(soln);
 
@@ -253,7 +255,16 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
 
         // Process reactions
         if (needsReactionsProcessing && solution.CanReact)
-            ChemicalReactionSystem.FullyReactSolution(soln, mixerComponent);
+        {
+            if (maxIterations > 0)
+            {
+                ChemicalReactionSystem.ReactSolutionByIterations(soln, maxIterations, mixerComponent);
+            }
+            else
+            {
+                ChemicalReactionSystem.FullyReactSolution(soln, mixerComponent);
+            }
+        }
 
         var overflow = solution.Volume - solution.MaxVolume;
         if (overflow > FixedPoint2.Zero)

@@ -18,6 +18,8 @@ public sealed partial class MetabolismComponent : Component
     [DataField(required:true)]
     public List<MetabolicReactionData> Reactions = new();
 
+    [DataField]
+    public FixedPoint2 Efficiency = 1.0f;
 
     /// <summary>
     /// How much volume can this metabolic component process in one update

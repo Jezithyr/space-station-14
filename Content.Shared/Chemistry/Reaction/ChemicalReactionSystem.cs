@@ -113,6 +113,7 @@ namespace Content.Shared.Chemistry.Reaction
 
             var attempt = new ReactionAttemptEvent(reaction, soln);
             RaiseLocalEvent(soln, ref attempt);
+            var reactionMultiplier = attempt.Multiplier;
             if (attempt.Cancelled)
             {
                 lowestUnitReactions = FixedPoint2.Zero;
@@ -125,7 +126,6 @@ namespace Content.Shared.Chemistry.Reaction
                 var reactantCoefficient = reactantData.Value.Amount;
 
                 var reactantQuantity = solution.GetTotalPrototypeQuantity(reactantName);
-
                 if (reactantQuantity <= FixedPoint2.Zero)
                     return false;
 
@@ -140,17 +140,24 @@ namespace Content.Shared.Chemistry.Reaction
                     continue;
                 }
 
-                var unitReactions = reactantQuantity / reactantCoefficient;
+                var unitReactions = reactantQuantity / reactantCoefficient * reactionMultiplier;
+
+                if (mixerComponent is {MixerOverVolumeEffect: MixerFullEffect.Prevent})
+                {
+                    var maxPossibleReactions = solution.AvailableVolume / reactantQuantity * reactionMultiplier;
+                    if (maxPossibleReactions < unitReactions)
+                    {
+                        unitReactions = maxPossibleReactions;
+                    }
+                }
 
                 if (unitReactions < lowestUnitReactions)
                 {
                     lowestUnitReactions = unitReactions;
                 }
             }
-
             if (reaction.Quantized)
                 lowestUnitReactions = (int) lowestUnitReactions;
-
             return lowestUnitReactions > 0;
         }
 
@@ -265,18 +272,44 @@ namespace Content.Shared.Chemistry.Reaction
             return true;
         }
 
-        /// <summary>
-        ///     Continually react a solution until no more reactions occur, with a volume constraint.
-        /// </summary>
-        public void FullyReactSolution(Entity<SolutionComponent> soln, ReactionMixerComponent? mixerComponent = null)
+
+        private SortedSet<ReactionPrototype> GetPossibleReactions(Entity<SolutionComponent> soln)
         {
-            // construct the initial set of reactions to check.
             SortedSet<ReactionPrototype> reactions = new();
             foreach (var reactant in soln.Comp.Solution.Contents)
             {
                 if (_reactionsSingle.TryGetValue(reactant.Reagent.Prototype, out var reactantReactions))
                     reactions.UnionWith(reactantReactions);
             }
+            return reactions;
+        }
+
+        /// <summary>
+        ///     Continually react a solution until no more reactions occur, constraint by an constrained limit.
+        /// </summary>
+        public void ReactSolutionByIterations(Entity<SolutionComponent> soln, int iterationLimit,
+            ReactionMixerComponent? mixerComponent = null)
+        {
+            // construct the initial set of reactions to check.
+            var reactions = GetPossibleReactions(soln);
+
+            var iterations = iterationLimit > MaxReactionIterations ? MaxReactionIterations : iterationLimit;
+            for (var i = 0; i < iterations; i++)
+            {
+                if (!ProcessReactions(soln, reactions, mixerComponent))
+                    return;
+            }
+            Log.Error($"{nameof(Solution)} {soln.Owner} could not finish reacting in under {iterations} loops.");
+        }
+
+
+        /// <summary>
+        ///     Continually react a solution until no more reactions occur, with a volume constraint.
+        /// </summary>
+        public void FullyReactSolution(Entity<SolutionComponent> soln, ReactionMixerComponent? mixerComponent = null)
+        {
+            // construct the initial set of reactions to check.
+            var reactions = GetPossibleReactions(soln);
 
             // Repeatedly attempt to perform reactions, ending when there are no more applicable reactions, or when we
             // exceed the iteration limit.
@@ -301,6 +334,7 @@ namespace Content.Shared.Chemistry.Reaction
     {
         public readonly ReactionPrototype Reaction = Reaction;
         public readonly Entity<SolutionComponent> Solution = Solution;
+        public FixedPoint2 Multiplier = 1.0f;
         public bool Cancelled = false;
     }
 }

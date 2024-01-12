@@ -28,6 +28,18 @@ public sealed class MetabolismSystem : EntitySystem
     public override void Initialize()
     {
         SetupCVars();
+        SubscribeLocalEvent<MetabolismComponent, SolutionChangedEvent>(OnMetabolismReaction);
+        SubscribeLocalEvent<MetabolismComponent, ReactionAttemptEvent>(OnMetabolizeAttempt);
+    }
+
+    private void OnMetabolizeAttempt(EntityUid uid, MetabolismComponent component, ref ReactionAttemptEvent args)
+    {
+        args.Multiplier = _metabolismGlobalMultiplier * component.Efficiency;
+
+    }
+
+    private void OnMetabolismReaction(EntityUid uid, MetabolismComponent component, ref SolutionChangedEvent args)
+    {
     }
 
     public override void Update(float frameTime)
@@ -48,7 +60,7 @@ public sealed class MetabolismSystem : EntitySystem
     private void UpdateMetabolism(EntityUid owner, MetabolismComponent metabolism, ReactionMixerComponent mixer)
     {
         //fire the metabolize event to fetch our target entity and solutions
-        var metabolizeEvent = new DoMetabolizeEvent
+        var metabolizeEvent = new StartMetabolizeEvent
         {
             Efficiency = 1.0f
         };
