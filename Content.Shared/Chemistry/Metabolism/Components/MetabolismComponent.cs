@@ -31,4 +31,4 @@ public sealed partial class MetabolismComponent : Component
 }
 
 [DataRecord]
-public record struct MetabolicReactionData(FixedPoint2 Multiplier, ProtoId<MetabolicReactionPrototype> Reaction, List<ReagentEffect> Effects);
+public record struct MetabolicReactionData(FixedPoint2 Multiplier, ProtoId<MetabolicReactionPrototype> Reaction);

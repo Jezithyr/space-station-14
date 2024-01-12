@@ -7,9 +7,8 @@ namespace Content.Shared.Chemistry.Metabolism.Systems;
 public record struct DoMetabolizeEvent(
     FixedPoint2 Efficiency,
     EntityUid TargetEntity,
-    SolutionComponent? InputSolution = null,
-    SolutionComponent? OutputSolution = null)
+    Entity<SolutionComponent>? TargetSolution = null)
 {
-    public bool IsValid => InputSolution != null && OutputSolution != null && TargetEntity.Valid;
+    public bool IsValid => TargetSolution != null && TargetEntity.Valid;
 
 };

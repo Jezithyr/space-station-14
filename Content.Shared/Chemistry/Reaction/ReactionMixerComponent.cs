@@ -13,6 +13,9 @@ public sealed partial class ReactionMixerComponent : Component
     [DataField]
     public List<ProtoId<MixingCategoryPrototype>> ReactionTypes = default!;
 
+    [DataField]
+    public MixerFullEffect MixerOverVolumeEffect = MixerFullEffect.Overflow;
+
     /// <summary>
     ///     A string which identifies the string to be sent when successfully mixing a solution
     /// </summary>
@@ -28,3 +31,12 @@ public readonly record struct AfterMixingEvent(EntityUid Mixed, EntityUid Mixer)
 
 [ByRefEvent]
 public record struct GetMixableSolutionAttemptEvent(EntityUid Mixed, Entity<SolutionComponent>? MixedSolution = null);
+
+[Serializable]
+public enum MixerFullEffect
+{
+    Prevent,
+    Nothing,
+    Overflow,
+    Burst,
+}

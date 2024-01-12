@@ -10,8 +10,8 @@ namespace Content.Shared.Chemistry.Reaction
     /// <summary>
     /// Prototype for chemical reaction definitions
     /// </summary>
-    [Prototype("reaction")]
-    public sealed partial class ReactionPrototype : IPrototype, IComparable<ReactionPrototype>
+    [Prototype("reaction"), Virtual]
+    public partial class ReactionPrototype : IPrototype, IComparable<ReactionPrototype>
     {
         [ViewVariables]
         [IdDataField]
