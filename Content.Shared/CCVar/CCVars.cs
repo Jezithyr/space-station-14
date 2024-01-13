@@ -1672,12 +1672,6 @@ namespace Content.Shared.CCVar
          */
 
         /// <summary>
-        /// The update Rate for Metabolism per second
-        /// </summary>
-        public static readonly CVarDef<float>
-            ChemMetabolismTickrate = CVarDef.Create("chem.metabolism_update_rate", 0.5f, CVar.SERVER | CVar.REPLICATED);
-
-        /// <summary>
         /// Value to globally scale metabolism by
         /// </summary>
         public static readonly CVarDef<float>

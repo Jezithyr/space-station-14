@@ -25,7 +25,7 @@ namespace Content.Shared.Chemistry.EntitySystems;
 /// </remarks>
 /// <param name="Solution">The solution entity that has been modified.</param>
 [ByRefEvent]
-public readonly partial record struct SolutionChangedEvent(Entity<SolutionComponent> Solution);
+public readonly partial record struct SolutionChangedEvent(Entity<SolutionComponent> Solution, Dictionary<string, FixedPoint2> Products, FixedPoint2 UnitReactions);
 
 /// <summary>
 /// The event raised whenever a solution entity is filled past its capacity.
@@ -244,26 +244,18 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="soln"></param>
     /// <param name="needsReactionsProcessing"></param>
     /// <param name="mixerComponent"></param>
-    /// <param name="maxIterations"></param>
-    public void UpdateChemicals(Entity<SolutionComponent> soln, bool needsReactionsProcessing = true, ReactionMixerComponent? mixerComponent = null,
-        int maxIterations = -1)
+    public void UpdateChemicals(Entity<SolutionComponent> soln, bool needsReactionsProcessing = true, ReactionMixerComponent? mixerComponent = null)
     {
         Dirty(soln);
 
         var (uid, comp) = soln;
         var solution = comp.Solution;
-
+        var products = new Dictionary<string, FixedPoint2>();
+        FixedPoint2 completedUnitReactions = 0;
         // Process reactions
         if (needsReactionsProcessing && solution.CanReact)
         {
-            if (maxIterations > 0)
-            {
-                ChemicalReactionSystem.ReactSolutionByIterations(soln, maxIterations, mixerComponent);
-            }
-            else
-            {
-                ChemicalReactionSystem.FullyReactSolution(soln, mixerComponent);
-            }
+            ChemicalReactionSystem.FullyReactSolution(soln, ref products, out completedUnitReactions,mixerComponent);
         }
 
         var overflow = solution.Volume - solution.MaxVolume;
@@ -275,7 +267,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
 
         UpdateAppearance((uid, comp, null));
 
-        var changedEv = new SolutionChangedEvent(soln);
+        var changedEv = new SolutionChangedEvent(soln, products, completedUnitReactions);
         RaiseLocalEvent(uid, ref changedEv);
     }
 

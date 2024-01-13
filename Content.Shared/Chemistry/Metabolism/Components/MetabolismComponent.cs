@@ -1,5 +1,4 @@
-﻿using Content.Shared.Chemistry.Metabolism.Prototypes;
-using Content.Shared.Chemistry.Reagent;
+﻿using Content.Shared.Chemistry.Reaction;
 using Content.Shared.FixedPoint;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -15,22 +14,15 @@ public sealed partial class MetabolismComponent : Component
     /// The metabolic reactions that this component performs in order of priority. Reactions closer to the beginning of the list
     /// have priority!
     /// </summary>
-    [DataField(required:true)]
+    [DataField(required:true), AutoNetworkedField]
     public List<MetabolicReactionData> Reactions = new();
 
-    [DataField]
-    public FixedPoint2 Efficiency = 1.0f;
-
     /// <summary>
-    /// How much volume can this metabolic component process in one update
-    /// -1 is unlimited!
+    /// The efficiency of the metabolic reactions
     /// </summary>
-    [DataField]
-    public FixedPoint2 MaxReagentProcessingVolume = -1;
-
-    public float AccumulatedFrameTime = 0f;
-
+    [DataField, AutoNetworkedField]
+    public FixedPoint2 Efficiency = 1.0f;
 }
 
 [DataRecord]
-public record struct MetabolicReactionData(FixedPoint2 Multiplier, ProtoId<MetabolicReactionPrototype> Reaction);
+public record struct MetabolicReactionData(FixedPoint2 Multiplier, ProtoId<ReactionPrototype> Reaction);

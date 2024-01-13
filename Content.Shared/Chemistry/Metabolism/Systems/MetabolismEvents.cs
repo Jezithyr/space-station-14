@@ -11,3 +11,6 @@ public record struct StartMetabolizeEvent(
     public EntityUid TargetEntity = EntityUid.Invalid;
     public bool IsValid => TargetSolution != null && TargetEntity.Valid;
 }
+
+[ByRefEvent]
+public record struct MetabolizeEvent(Dictionary<string, FixedPoint2> Products, FixedPoint2 UnitReactions);
