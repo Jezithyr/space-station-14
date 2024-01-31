@@ -25,7 +25,7 @@ public sealed class UseDelaySystem : EntitySystem
         if (ent.Comp.Delay == delay)
             return;
 
-        ent.Comp.Delay += delay;
+        ent.Comp.Delay = delay;
         Dirty(ent);
     }
 
@@ -60,5 +60,13 @@ public sealed class UseDelaySystem : EntitySystem
         ent.Comp.DelayEndTime = curTime - _metadata.GetPauseTime(ent) + ent.Comp.Delay;
         Dirty(ent);
         return true;
+    }
+
+    public bool TryResetDelay(EntityUid uid, bool checkDelayed = false, UseDelayComponent? component = null)
+    {
+        if (!Resolve(uid, ref component, false))
+            return false;
+
+        return TryResetDelay((uid, component), checkDelayed);
     }
 }
