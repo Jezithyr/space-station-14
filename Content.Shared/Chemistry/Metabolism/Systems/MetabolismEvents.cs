@@ -1,16 +1,6 @@
-﻿using Content.Shared.Chemistry.Components;
-using Content.Shared.FixedPoint;
+﻿using Content.Shared.FixedPoint;
 
 namespace Content.Shared.Chemistry.Metabolism.Systems;
-
-[ByRefEvent]
-public record struct StartMetabolizeEvent(
-    Entity<SolutionComponent>? TargetSolution = null)
-{
-    public FixedPoint2 Efficiency = 1.0;
-    public EntityUid TargetEntity = EntityUid.Invalid;
-    public bool IsValid => TargetSolution != null && TargetEntity.Valid;
-}
 
 [ByRefEvent]
 public record struct MetabolizeEvent(Dictionary<string, FixedPoint2> Products, FixedPoint2 UnitReactions);

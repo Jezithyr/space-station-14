@@ -22,6 +22,12 @@ public sealed partial class MetabolismComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public FixedPoint2 Efficiency = 1.0f;
+
+    [AutoNetworkedField, ViewVariables(VVAccess.ReadOnly)]
+    public EntityUid SourceSolutionEntity;
+
+    [DataField, AutoNetworkedField]
+    public EntityUid? OutputSolutionEntity;
 }
 
 [DataRecord]
