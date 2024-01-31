@@ -104,7 +104,7 @@ public partial class WoundSystem
     //Applies damage to woundables and handles part gibbing/destruction
     private void ApplyWoundableDamage(EntityUid target, WoundableComponent woundable, DamageSpecifier damage)
     {
-        var totalAdjDmg = woundable.DamageScaling * damage.Total;
+        var totalAdjDmg = woundable.DamageScaling * damage.GetTotal();
 
         if (totalAdjDmg < 0)
             return;//TODO: write esoteric healing logic. For now this will have no effect!

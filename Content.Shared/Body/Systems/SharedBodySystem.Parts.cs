@@ -80,7 +80,7 @@ public partial class SharedBodySystem
 
                 if (organComp.Body != null)
                     {
-                        var ev = new OrganRemovedFromBodyEvent(oldBody.Value, uid);
+                        var ev = new OrganRemovedFromBodyEvent(organComp.Body.Value, uid);
                                 RaiseLocalEvent(organ, ev);
                     }
                 organComp.Body = bodyUid;
@@ -96,7 +96,7 @@ public partial class SharedBodySystem
         {
             if (!Containers.TryGetContainer(uid, GetPartSlotContainerId(slotId), out var container))
                 continue;
-                                
+
 
             foreach (var containedEnt in container.ContainedEntities)
             {
