@@ -4,7 +4,6 @@ using Content.Shared.Alert;
 using Content.Shared.Bed.Sleep;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Database;
-using Content.Shared.GameTelemetry;
 using Content.Shared.Hands.Components;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
@@ -17,7 +16,7 @@ using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
 using Content.Shared.Verbs;
 using Content.Shared.Whitelist;
-using Robust.Shared.GameTelemetry;
+using Robust.Shared.GameSensing;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Utility;
@@ -28,7 +27,7 @@ namespace Content.Shared.Buckle;
 public abstract partial class SharedBuckleSystem
 {
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
-    [Dependency] private readonly GameTelemetryManager _gameTelemetry = default!;
+    [Dependency] private readonly GameSensingManager _gameSensing = default!;
 
     private void InitializeBuckle()
     {
@@ -378,10 +377,6 @@ public abstract partial class SharedBuckleSystem
                 _pulling.TryStopPull(strapUid, toPullable);
             }
         }
-
-        //TODO: TEMP TESTING TELEMETRY
-        var ev2 = new GameTelemetryArgs(userUid, new List<EntityUid>{userUid});
-        _gameTelemetry.RaiseLocalEvent(SS14TelemetryCfg.PlayerBuckled, ref ev2);
 
         // Logging
         if (userUid != buckleUid)

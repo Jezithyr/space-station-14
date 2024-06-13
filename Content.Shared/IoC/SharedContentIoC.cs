@@ -1,6 +1,6 @@
 ﻿using Content.Shared.Humanoid.Markings;
 using Content.Shared.Localizations;
-using Robust.Shared.GameTelemetry;
+using Robust.Shared.GameSensing;
 
 namespace Content.Shared.IoC
 {
