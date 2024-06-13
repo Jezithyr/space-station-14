@@ -3,7 +3,7 @@
 namespace Content.Shared.GameplayTelemetry;
 
 // ReSharper disable once InconsistentNaming
-public sealed class SS14TelemetryConfig : GameTelemetryConfig
+public sealed class Ss14TelemetryController : GameTelemetryController
 {
     protected override void LoadIds(bool isServer)
     {
