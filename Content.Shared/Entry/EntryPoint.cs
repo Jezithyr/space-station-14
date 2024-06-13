@@ -7,7 +7,7 @@ using Content.Shared.Maps;
 using Robust.Shared;
 using Robust.Shared.Configuration;
 using Robust.Shared.ContentPack;
-using Robust.Shared.GameSensing;
+using Robust.Shared.GameTelemetry;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Markdown;
@@ -22,7 +22,7 @@ namespace Content.Shared.Entry
         [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
         [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
         [Dependency] private readonly IResourceManager _resMan = default!;
-        [Dependency] private readonly GameSensorManager _gameSensorManager = default!;
+        [Dependency] private readonly GameTelemetryManager _gameTelemetryManager = default!;
 
         private readonly ResPath _ignoreFileDirectory = new("/IgnoredPrototypes/");
 
@@ -46,7 +46,7 @@ namespace Content.Shared.Entry
         {
             base.PostInit();
 
-            _gameSensorManager.Initialize();
+            _gameTelemetryManager.Initialize();
             InitTileDefinitions();
             IoCManager.Resolve<MarkingManager>().Initialize();
 

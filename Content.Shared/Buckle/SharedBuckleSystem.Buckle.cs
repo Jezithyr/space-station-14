@@ -4,6 +4,7 @@ using Content.Shared.Alert;
 using Content.Shared.Bed.Sleep;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Database;
+using Content.Shared.GameplayTelemetry;
 using Content.Shared.Hands.Components;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
@@ -16,7 +17,7 @@ using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
 using Content.Shared.Verbs;
 using Content.Shared.Whitelist;
-using Robust.Shared.GameSensing;
+using Robust.Shared.GameTelemetry;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Utility;
@@ -27,7 +28,7 @@ namespace Content.Shared.Buckle;
 public abstract partial class SharedBuckleSystem
 {
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
-    [Dependency] private readonly GameSensingManager _gameSensing = default!;
+    [Dependency] private readonly GameTelemetryManager _gameTelemetry = default!;
 
     private void InitializeBuckle()
     {
