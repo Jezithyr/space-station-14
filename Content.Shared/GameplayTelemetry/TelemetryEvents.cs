@@ -3,4 +3,4 @@
 namespace Content.Shared.GameplayTelemetry;
 
 [ByRefEvent]
-public record struct EntityTelemetry(EntityUid Origin, string Message) : IGameTelemetryArgs;
+public record struct EntityTelemetry(EntityUid Origin, string Message);
