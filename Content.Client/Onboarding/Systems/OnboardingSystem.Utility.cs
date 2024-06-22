@@ -1,17 +1,15 @@
-﻿using Content.Shared.Movement.Events;
-using Robust.Shared.GameTelemetry;
-using Robust.Shared.Player;
+﻿using Robust.Shared.GameTelemetry;
 
-namespace Content.Shared.Onboarding;
+namespace Content.Client.Onboarding.Systems;
 
 public sealed partial class OnboardingSystem
 {
-    private void RegTriggerId(string id, string category = TelemetryCategory)
+    private void CreateTriggerId(string id, string category = TelemetryCategory)
     {
-        RegTriggerId((id, category));
+        CreateTriggerId((id, category));
     }
 
-    private void RegTriggerId(GameTelemetryId telemetryId)
+    private void CreateTriggerId(GameTelemetryId telemetryId)
     {
         RegisterId<OnboardingTriggerEvent>(telemetryId);
     }

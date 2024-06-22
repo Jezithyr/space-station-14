@@ -3,7 +3,6 @@ using System.Numerics;
 using Content.Shared.Alert;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Database;
-using Content.Shared.Onboarding;
 using Content.Shared.Hands.Components;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Movement.Events;

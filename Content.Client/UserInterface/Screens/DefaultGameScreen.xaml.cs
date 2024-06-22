@@ -23,6 +23,9 @@ public sealed partial class DefaultGameScreen : InGameScreen
         SetAnchorAndMarginPreset(Chat, LayoutPreset.TopRight, margin: 10);
         SetAnchorAndMarginPreset(Alerts, LayoutPreset.TopRight, margin: 10);
 
+        SetAnchorPreset(OnboardingLayer, LayoutPreset.Wide);
+        OnboardingLayer.MouseFilter = MouseFilterMode.Ignore;
+
         Chat.OnResized += ChatOnResized;
         Chat.OnChatResizeFinish += ChatOnResizeFinish;
         Actions.ActionsContainer.Columns = 1;

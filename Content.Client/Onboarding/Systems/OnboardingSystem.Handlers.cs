@@ -1,14 +1,15 @@
 ﻿using Robust.Shared.GameTelemetry;
 
-namespace Content.Shared.Onboarding;
+namespace Content.Client.Onboarding.Systems;
 
-public sealed class OnboardingHandlerSystem : GameTelemetryHandlerSystem
+public sealed partial class OnboardingSystem
 {
-    public override void Initialize()
+    private void InitTelemetryHandlers()
     {
         SubscribeAllTelemetryHandlers<OnboardingTriggerEvent>(HandleOnboardingTrigger,
-            categoryFilter: OnboardingSystem.TelemetryCategory);
+            categoryFilter: TelemetryCategory);
     }
+
 
     private void HandleOnboardingTrigger(GameTelemetryId id, ref OnboardingTriggerEvent ev)
     {

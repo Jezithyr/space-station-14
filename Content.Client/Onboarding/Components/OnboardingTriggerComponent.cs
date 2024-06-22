@@ -1,4 +1,4 @@
-﻿namespace Content.Shared.Onboarding.Components;
+﻿namespace Content.Client.Onboarding.Components;
 
 [RegisterComponent]
 public sealed partial class OnboardingTriggerComponent : Component

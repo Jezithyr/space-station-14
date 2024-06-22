@@ -1,0 +1,12 @@
+﻿<onboarding:TutPointerControl
+    xmlns="https://spacestation14.io"
+    xmlns:onboarding="clr-namespace:Content.Client.UserInterface.Systems.Onboarding.Controls"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+
+    MinSize="50 50"
+    >
+    <controls:DirectionIcon
+        Name="OnboardingPointer"
+        Access="Private"
+        />
+</onboarding:TutPointerControl>

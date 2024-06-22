@@ -1,29 +1,25 @@
 ﻿using Robust.Shared.GameTelemetry;
-using Robust.Shared.Player;
+using Robust.Shared.GameTelemetry.Systems;
 
-namespace Content.Shared.Onboarding;
-
-// ReSharper disable once InconsistentNaming
+namespace Content.Client.Onboarding.Systems;
 public sealed partial class OnboardingSystem : GameTelemetrySystem
 {
-
-    [Dependency] private readonly ISharedPlayerManager _playerManager = default!;
-
     public const string TelemetryCategory = "Onboarding";
     public static GameTelemetryId MoveInputId = ("MoveInput", TelemetryCategory);
-    protected override void DefineIds(bool isServer)
+    protected override void DefineTelemetryIds(bool isServer)
     {
         if (isServer)
         {
         }
         else
         {
-            RegTriggerId(MoveInputId);
+            CreateTriggerId(MoveInputId);
         }
     }
 
     public override void Initialize()
     {
-        InitTriggers();
+        InitTelemetryHandlers();
+        InitTelemetryTriggers();
     }
 }
