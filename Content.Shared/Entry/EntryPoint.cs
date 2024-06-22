@@ -22,7 +22,6 @@ namespace Content.Shared.Entry
         [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
         [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
         [Dependency] private readonly IResourceManager _resMan = default!;
-        [Dependency] private readonly GameTelemetryManager _gameTelemetryManager = default!;
 
         private readonly ResPath _ignoreFileDirectory = new("/IgnoredPrototypes/");
 
@@ -46,7 +45,6 @@ namespace Content.Shared.Entry
         {
             base.PostInit();
 
-            _gameTelemetryManager.Initialize();
             InitTileDefinitions();
             IoCManager.Resolve<MarkingManager>().Initialize();
 
