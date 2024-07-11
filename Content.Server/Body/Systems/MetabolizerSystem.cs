@@ -110,7 +110,7 @@ namespace Content.Server.Body.Systems
             // First step is get the solution we actually care about
             var solutionName = ent.Comp1.SolutionName;
             Solution? solution = null;
-            Entity<SolutionComponent>? soln = default!;
+            Entity<LegacySolutionComponent>? soln = default!;
             EntityUid? solutionEntityUid = null;
 
             if (ent.Comp1.SolutionOnBody)

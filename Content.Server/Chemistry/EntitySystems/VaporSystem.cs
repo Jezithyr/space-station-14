@@ -102,7 +102,7 @@ namespace Content.Server.Chemistry.EntitySystems
             }
         }
 
-        private void Update(float frameTime, Entity<VaporComponent> ent, Entity<SolutionComponent> soln, TransformComponent xform)
+        private void Update(float frameTime, Entity<VaporComponent> ent, Entity<LegacySolutionComponent> soln, TransformComponent xform)
         {
             var (entity, vapor) = ent;
             if (!vapor.Active)

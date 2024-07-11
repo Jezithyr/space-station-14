@@ -66,7 +66,7 @@ namespace Content.Client.Administration.UI.ManageSolutions
                 return;
 
             if (!_solutions.TryGetValue(_selectedSolution, out var solutionId) ||
-                !_entityManager.TryGetComponent(solutionId, out SolutionComponent? solutionComp))
+                !_entityManager.TryGetComponent(solutionId, out LegacySolutionComponent? solutionComp))
                 return;
 
             var solution = solutionComp.Solution;
@@ -207,7 +207,7 @@ namespace Content.Client.Administration.UI.ManageSolutions
         {
             if (_solutions == null || _selectedSolution == null ||
                 !_solutions.TryGetValue(_selectedSolution, out var solutionId) ||
-                !_entityManager.TryGetComponent(solutionId, out SolutionComponent? solutionComp))
+                !_entityManager.TryGetComponent(solutionId, out LegacySolutionComponent? solutionComp))
                 return;
 
             var solution = solutionComp.Solution;

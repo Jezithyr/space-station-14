@@ -30,7 +30,7 @@ namespace Content.Server.Animals.Components
         ///     The solution to add reagent to.
         /// </summary>
         [DataField]
-        public Entity<SolutionComponent>? Solution = null;
+        public Entity<LegacySolutionComponent>? Solution = null;
 
         /// <summary>
         ///     The amount of reagent to be generated on update.

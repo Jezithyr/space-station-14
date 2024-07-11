@@ -30,7 +30,7 @@ public sealed partial class WoolyComponent : Component
     ///     The solution to add reagent to.
     /// </summary>
     [DataField]
-    public Entity<SolutionComponent>? Solution;
+    public Entity<LegacySolutionComponent>? Solution;
 
     /// <summary>
     ///     The amount of reagent to be generated on update.

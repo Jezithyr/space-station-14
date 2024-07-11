@@ -26,7 +26,7 @@ public sealed partial class GasCondenserComponent : Component
     /// The solution that gases are condensed into.
     /// </summary>
     [DataField]
-    public Entity<SolutionComponent>? Solution = null;
+    public Entity<LegacySolutionComponent>? Solution = null;
 
     /// <summary>
     /// For a condenser, how many U of reagents are given per each mole of gas.

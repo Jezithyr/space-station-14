@@ -28,6 +28,16 @@ public sealed partial class ReagentDefinitionComponent : Component
     public float PricePerUnit;
 
     [DataField]
+    public FixedPoint4 MolarMass = 18;
+
+    /// <summary>
+    /// Gas constant for thermal expansion, in moles/kelvin
+    /// Observed value for water.
+    /// </summary>
+    [DataField]
+    public float ExpansionConstant = 8.314f;
+
+    [DataField]
     public ProtoId<FlavorPrototype>? Flavor;
 
     [DataField("desc", required: true)]
@@ -104,4 +114,7 @@ public sealed partial class ReagentDefinitionComponent : Component
 
     [DataField("plantMetabolism", serverOnly: true)]
     public List<EntityEffect> PlantMetabolisms = new(0);
+
+    [DataField]
+    public string LegacyId = string.Empty;
 }

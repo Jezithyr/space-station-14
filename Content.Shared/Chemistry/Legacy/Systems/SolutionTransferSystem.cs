@@ -153,9 +153,9 @@ public sealed class SolutionTransferSystem : EntitySystem
     /// <returns>The actual amount transferred.</returns>
     public FixedPoint2 Transfer(EntityUid user,
         EntityUid sourceEntity,
-        Entity<SolutionComponent> source,
+        Entity<LegacySolutionComponent> source,
         EntityUid targetEntity,
-        Entity<SolutionComponent> target,
+        Entity<LegacySolutionComponent> target,
         FixedPoint2 amount)
     {
         var transferAttempt = new SolutionTransferAttemptEvent(sourceEntity, targetEntity);

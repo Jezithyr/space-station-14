@@ -124,7 +124,7 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
     /// <summary>
     ///     Logic for an absorbing entity interacting with a refillable.
     /// </summary>
-    private bool TryRefillableInteract(EntityUid user, EntityUid used, EntityUid target, AbsorbentComponent component, UseDelayComponent? useDelay, Entity<SolutionComponent> absorbentSoln)
+    private bool TryRefillableInteract(EntityUid user, EntityUid used, EntityUid target, AbsorbentComponent component, UseDelayComponent? useDelay, Entity<LegacySolutionComponent> absorbentSoln)
     {
         if (!TryComp(target, out RefillableSolutionComponent? refillable))
             return false;
@@ -159,8 +159,8 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
         EntityUid used,
         EntityUid target,
         AbsorbentComponent component,
-        Entity<SolutionComponent> absorbentSoln,
-        Entity<SolutionComponent> refillableSoln)
+        Entity<LegacySolutionComponent> absorbentSoln,
+        Entity<LegacySolutionComponent> refillableSoln)
     {
         var absorbentSolution = absorbentSoln.Comp.Solution;
         if (absorbentSolution.Volume <= 0)
@@ -203,8 +203,8 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
         EntityUid used,
         EntityUid target,
         AbsorbentComponent component,
-        Entity<SolutionComponent> absorbentSoln,
-        Entity<SolutionComponent> refillableSoln)
+        Entity<LegacySolutionComponent> absorbentSoln,
+        Entity<LegacySolutionComponent> refillableSoln)
     {
         var contaminantsFromAbsorbent = _solutionContainerSystem.SplitSolutionWithout(absorbentSoln, component.PickupAmount, PuddleSystem.EvaporationReagents);
 
@@ -268,7 +268,7 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
     /// <summary>
     ///     Logic for an absorbing entity interacting with a puddle.
     /// </summary>
-    private bool TryPuddleInteract(EntityUid user, EntityUid used, EntityUid target, AbsorbentComponent absorber, UseDelayComponent? useDelay, Entity<SolutionComponent> absorberSoln)
+    private bool TryPuddleInteract(EntityUid user, EntityUid used, EntityUid target, AbsorbentComponent absorber, UseDelayComponent? useDelay, Entity<LegacySolutionComponent> absorberSoln)
     {
         if (!TryComp(target, out PuddleComponent? puddle))
             return false;

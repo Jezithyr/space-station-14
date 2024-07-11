@@ -27,7 +27,7 @@ public sealed partial class LungComponent : Component
     /// The solution on this entity that these lungs act on.
     /// </summary>
     [DataField]
-    public Entity<SolutionComponent>? Solution = null;
+    public Entity<LegacySolutionComponent>? Solution = null;
 
     /// <summary>
     /// The type of gas this lung needs. Used only for the breathing alerts, not actual metabolism.

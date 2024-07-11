@@ -73,7 +73,7 @@ public sealed class SolutionCommand : ToolshedCommand
         => input.Select(x => AdjReagent(ctx, x, name, amountRef));
 }
 
-public readonly record struct SolutionRef(Entity<SolutionComponent> Solution)
+public readonly record struct SolutionRef(Entity<LegacySolutionComponent> Solution)
 {
     public override string ToString()
     {

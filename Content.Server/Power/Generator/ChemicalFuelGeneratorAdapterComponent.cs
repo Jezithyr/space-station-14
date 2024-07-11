@@ -30,7 +30,7 @@ public sealed partial class ChemicalFuelGeneratorAdapterComponent : Component
     /// The solution on the <see cref="SolutionContainerManagerComponent"/> to use.
     /// </summary>
     [DataField("solutionRef")]
-    public Entity<SolutionComponent>? Solution = null;
+    public Entity<LegacySolutionComponent>? Solution = null;
 
     /// <summary>
     /// How much reagent (can be fractional) is left in the generator.

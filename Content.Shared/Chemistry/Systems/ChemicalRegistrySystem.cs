@@ -12,7 +12,8 @@ using ReagentEntity = Robust.Shared.GameObjects.Entity<
 
 using ReactionEntity = Robust.Shared.GameObjects.Entity<
     Content.Shared.Chemistry.Components.ReactionDefinitionComponent,
-    Content.Shared.Chemistry.Components.ReactionTemperatureRequirementComponent?>;
+    Content.Shared.Chemistry.Components.RequiresReactionMixingComponent?,
+    Content.Shared.Chemistry.Components.RequiresReactionTemperatureComponent?>;
 
 namespace Content.Shared.Chemistry.Systems;
 
@@ -27,7 +28,6 @@ public sealed partial class ChemicalRegistrySystem : EntitySystem
         FrozenDictionary<string, ReagentEntity>.Empty;
     private FrozenDictionary<string, ReactionEntity> _reactions =
         FrozenDictionary<string, ReactionEntity>.Empty;
-
     //TODO: Fix Saveload by saving proto<->entityId mapping as part of the map
 
 
@@ -50,11 +50,11 @@ public sealed partial class ChemicalRegistrySystem : EntitySystem
         LoadData();
     }
 
-    public Entity<ReagentDefinitionComponent, ReagentMetamorphicSpriteComponent?> GetReagent(string id)
+    public Entity<ReagentDefinitionComponent> GetReagent(string id)
     {
         if (!_reagents.TryGetValue(id, out var data))
             throw new ArgumentException($"Reagent with ID: {id} is not registered!");
-        return data;
+        return new Entity<ReagentDefinitionComponent>(data.Owner, data.Comp1);
     }
 
     public bool HasReagent(string id) => _reagents.ContainsKey(id);
@@ -163,7 +163,8 @@ public sealed partial class ChemicalRegistrySystem : EntitySystem
             entProto.ID,
             (newEnt,
                 reactionDef,
-                CompOrNull<ReactionTemperatureRequirementComponent>(newEnt)
+                CompOrNull<RequiresReactionMixingComponent>(newEnt),
+                CompOrNull<RequiresReactionTemperatureComponent>(newEnt)
                 ));
         return true;
     }

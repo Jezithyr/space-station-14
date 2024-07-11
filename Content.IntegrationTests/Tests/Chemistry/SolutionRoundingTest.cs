@@ -72,7 +72,7 @@ public sealed class SolutionRoundingTest
         var testMap = await pair.CreateTestMap();
 
         Solution solution = default;
-        Entity<SolutionComponent> solutionEnt = default;
+        Entity<LegacySolutionComponent> solutionEnt = default;
 
         await server.WaitPost(() =>
         {

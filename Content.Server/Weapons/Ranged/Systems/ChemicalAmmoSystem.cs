@@ -22,7 +22,7 @@ namespace Content.Server.Weapons.Ranged.Systems
 
             var projectiles = args.FiredProjectiles;
 
-            var projectileSolutionContainers = new List<(EntityUid, Entity<SolutionComponent>)>();
+            var projectileSolutionContainers = new List<(EntityUid, Entity<LegacySolutionComponent>)>();
             foreach (var projectile in projectiles)
             {
                 if (_solutionContainerSystem

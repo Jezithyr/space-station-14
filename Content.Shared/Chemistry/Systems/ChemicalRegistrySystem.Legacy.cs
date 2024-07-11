@@ -1,19 +1,21 @@
 ﻿using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Chemistry.Reagent;
-
-using ReactionEntity = Robust.Shared.GameObjects.Entity<
-    Content.Shared.Chemistry.Components.ReactionDefinitionComponent,
-    Content.Shared.Chemistry.Components.ReactionTemperatureRequirementComponent?>;
-
+using Content.Shared.FixedPoint;
 using ReagentEntity = Robust.Shared.GameObjects.Entity<
     Content.Shared.Chemistry.Components.ReagentDefinitionComponent,
     Content.Shared.Chemistry.Components.ReagentMetamorphicSpriteComponent?>;
+
+using ReactionEntity = Robust.Shared.GameObjects.Entity<
+    Content.Shared.Chemistry.Components.ReactionDefinitionComponent,
+    Content.Shared.Chemistry.Components.RequiresReactionMixingComponent?,
+    Content.Shared.Chemistry.Components.RequiresReactionTemperatureComponent?>;
 
 namespace Content.Shared.Chemistry.Systems;
 
 public sealed partial class ChemicalRegistrySystem
 {
+    private readonly FixedPoint4 _molarMass = 18;
     private void ConvertLegacyReagentPrototypes(ref Dictionary<string, ReagentEntity> pendingReagents)
     {
         foreach (var reagentProto in _protoManager.EnumeratePrototypes<ReagentPrototype>())
@@ -23,6 +25,7 @@ public sealed partial class ChemicalRegistrySystem
             ReagentMetamorphicSpriteComponent? reagentMetaMorph = null;
 
             reagentDef.NameLocId = reagentProto.NameLocId;
+            reagentDef.MolarMass = _molarMass;
             reagentDef.Recognizable = reagentProto.Recognizable;
             reagentDef.PricePerUnit = reagentProto.PricePerUnit;
             reagentDef.Flavor = reagentProto.Flavor;
@@ -42,6 +45,8 @@ public sealed partial class ChemicalRegistrySystem
             reagentDef.ReactiveEffects = reagentProto.ReactiveEffects;
             reagentDef.TileReactions = reagentProto.TileReactions;
             reagentDef.PlantMetabolisms = reagentProto.PlantMetabolisms;
+            reagentDef.LegacyId = reagentProto.ID;
+
             if (reagentProto.MetamorphicSprite != null)
             {
                 reagentMetaMorph = AddComp<ReagentMetamorphicSpriteComponent>(newEnt);
@@ -62,11 +67,11 @@ public sealed partial class ChemicalRegistrySystem
         {
             var newEnt = Spawn();
             var reactionDef = AddComp<ReactionDefinitionComponent>(newEnt);
-            var tempReq = AddComp<ReactionTemperatureRequirementComponent>(newEnt);
+            var tempReq = AddComp<RequiresReactionTemperatureComponent>(newEnt);
+            RequiresReactionMixingComponent? mixingReq = null;
             tempReq.MinimumTemperature = reactionProto.MinimumTemperature;
             tempReq.MaximumTemperature = reactionProto.MaximumTemperature;
             reactionDef.ConserveEnergy = reactionProto.ConserveEnergy;
-            reactionDef.MixingCategories = reactionProto.MixingCategories;
             reactionDef.Effects = reactionProto.Effects;
             reactionDef.Impact = reactionProto.Impact;
             reactionDef.Sound = reactionProto.Sound;
@@ -80,8 +85,14 @@ public sealed partial class ChemicalRegistrySystem
                 reactionDef.Reactants.Add(reagentId, new ReactantData(data.Amount, data.Catalyst));
             }
 
+            if (reactionProto.MixingCategories != null)
+            {
+                mixingReq = AddComp<RequiresReactionMixingComponent>(newEnt);
+                mixingReq.MixingCategories = reactionProto.MixingCategories;
+            }
+
             _metaSystem.SetEntityName(newEnt, reactionProto.Name);
-            pendingReactions.Add(reactionProto.ID, (newEnt, reactionDef, tempReq));
+            pendingReactions.Add(reactionProto.ID, (newEnt, reactionDef, mixingReq, tempReq));
         }
     }
 }

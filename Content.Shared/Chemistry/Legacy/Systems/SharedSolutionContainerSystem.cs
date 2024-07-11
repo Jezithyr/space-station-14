@@ -30,7 +30,7 @@ namespace Content.Shared.Chemistry.EntitySystems;
 /// </remarks>
 /// <param name="Solution">The solution entity that has been modified.</param>
 [ByRefEvent]
-public readonly partial record struct SolutionChangedEvent(Entity<SolutionComponent> Solution);
+public readonly partial record struct SolutionChangedEvent(Entity<LegacySolutionComponent> Solution);
 
 /// <summary>
 /// The event raised whenever a solution entity is filled past its capacity.
@@ -38,10 +38,10 @@ public readonly partial record struct SolutionChangedEvent(Entity<SolutionCompon
 /// <param name="Solution">The solution entity that has been overfilled.</param>
 /// <param name="Overflow">The amount by which the solution entity has been overfilled.</param>
 [ByRefEvent]
-public partial record struct SolutionOverflowEvent(Entity<SolutionComponent> Solution, FixedPoint2 Overflow)
+public partial record struct SolutionOverflowEvent(Entity<LegacySolutionComponent> Solution, FixedPoint2 Overflow)
 {
     /// <summary>The solution entity that has been overfilled.</summary>
-    public readonly Entity<SolutionComponent> Solution = Solution;
+    public readonly Entity<LegacySolutionComponent> Solution = Solution;
     /// <summary>The amount by which the solution entity has been overfilled.</summary>
     public readonly FixedPoint2 Overflow = Overflow;
     /// <summary>Whether any of the event handlers for this event have handled overflow behaviour.</summary>
@@ -75,9 +75,9 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
 
         InitializeRelays();
 
-        SubscribeLocalEvent<SolutionComponent, ComponentInit>(OnComponentInit);
-        SubscribeLocalEvent<SolutionComponent, ComponentStartup>(OnSolutionStartup);
-        SubscribeLocalEvent<SolutionComponent, ComponentShutdown>(OnSolutionShutdown);
+        SubscribeLocalEvent<LegacySolutionComponent, ComponentInit>(OnComponentInit);
+        SubscribeLocalEvent<LegacySolutionComponent, ComponentStartup>(OnSolutionStartup);
+        SubscribeLocalEvent<LegacySolutionComponent, ComponentShutdown>(OnSolutionShutdown);
         SubscribeLocalEvent<SolutionContainerManagerComponent, ComponentInit>(OnContainerManagerInit);
         SubscribeLocalEvent<ExaminableSolutionComponent, ExaminedEvent>(OnExamineSolution);
         SubscribeLocalEvent<ExaminableSolutionComponent, GetVerbsEvent<ExamineVerb>>(OnSolutionExaminableVerb);
@@ -100,7 +100,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="solution">Returns the solution state of the solution entity.</param>
     /// <returns>Whether the solution was successfully resolved.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ResolveSolution(Entity<SolutionContainerManagerComponent?> container, string? name, [NotNullWhen(true)] ref Entity<SolutionComponent>? entity, [NotNullWhen(true)] out Solution? solution)
+    public bool ResolveSolution(Entity<SolutionContainerManagerComponent?> container, string? name, [NotNullWhen(true)] ref Entity<LegacySolutionComponent>? entity, [NotNullWhen(true)] out Solution? solution)
     {
         if (!ResolveSolution(container, name, ref entity))
         {
@@ -114,7 +114,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
 
     /// <inheritdoc cref="ResolveSolution"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ResolveSolution(Entity<SolutionContainerManagerComponent?> container, string? name, [NotNullWhen(true)] ref Entity<SolutionComponent>? entity)
+    public bool ResolveSolution(Entity<SolutionContainerManagerComponent?> container, string? name, [NotNullWhen(true)] ref Entity<LegacySolutionComponent>? entity)
     {
         if (entity is not null)
         {
@@ -141,7 +141,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     public bool TryGetSolution(
         Entity<SolutionContainerManagerComponent?> container,
         string? name,
-        [NotNullWhen(true)] out Entity<SolutionComponent>? entity,
+        [NotNullWhen(true)] out Entity<LegacySolutionComponent>? entity,
         [NotNullWhen(true)] out Solution? solution,
         bool errorOnMissing = false)
     {
@@ -159,7 +159,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     public bool TryGetSolution(
         Entity<SolutionContainerManagerComponent?> container,
         string? name,
-        [NotNullWhen(true)] out Entity<SolutionComponent>? entity,
+        [NotNullWhen(true)] out Entity<LegacySolutionComponent>? entity,
         bool errorOnMissing = false)
     {
         EntityUid uid;
@@ -191,7 +191,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
             return false;
         }
 
-        if (!TryComp(uid, out SolutionComponent? comp))
+        if (!TryComp(uid, out LegacySolutionComponent? comp))
         {
             entity = null;
             if (!errorOnMissing)
@@ -221,9 +221,9 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         return false;
     }
 
-    public IEnumerable<(string? Name, Entity<SolutionComponent> Solution)> EnumerateSolutions(Entity<SolutionContainerManagerComponent?> container, bool includeSelf = true)
+    public IEnumerable<(string? Name, Entity<LegacySolutionComponent> Solution)> EnumerateSolutions(Entity<SolutionContainerManagerComponent?> container, bool includeSelf = true)
     {
-        if (includeSelf && TryComp(container, out SolutionComponent? solutionComp))
+        if (includeSelf && TryComp(container, out LegacySolutionComponent? solutionComp))
             yield return (null, (container.Owner, solutionComp));
 
         if (!Resolve(container, ref container.Comp, logMissing: false))
@@ -238,7 +238,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
                 continue;
 
             if (ContainerSystem.GetContainer(container, $"solution@{name}") is ContainerSlot slot && slot.ContainedEntity is { } solutionId)
-                yield return (name, (solutionId, Comp<SolutionComponent>(solutionId)));
+                yield return (name, (solutionId, Comp<LegacySolutionComponent>(solutionId)));
         }
     }
 
@@ -254,7 +254,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     }
 
 
-    protected void UpdateAppearance(Entity<AppearanceComponent?> container, Entity<SolutionComponent, ContainedSolutionComponent> soln)
+    protected void UpdateAppearance(Entity<AppearanceComponent?> container, Entity<LegacySolutionComponent, ContainedSolutionComponent> soln)
     {
         var (uid, appearanceComponent) = container;
         if (!HasComp<SolutionContainerVisualsComponent>(uid) || !Resolve(uid, ref appearanceComponent, logMissing: false))
@@ -299,7 +299,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="soln"></param>
     /// <param name="needsReactionsProcessing"></param>
     /// <param name="mixerComponent"></param>
-    public void UpdateChemicals(Entity<SolutionComponent> soln, bool needsReactionsProcessing = true, ReactionMixerComponent? mixerComponent = null)
+    public void UpdateChemicals(Entity<LegacySolutionComponent> soln, bool needsReactionsProcessing = true, ReactionMixerComponent? mixerComponent = null)
     {
         Dirty(soln);
 
@@ -323,7 +323,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         RaiseLocalEvent(uid, ref changedEv);
     }
 
-    public void UpdateAppearance(Entity<SolutionComponent, AppearanceComponent?> soln)
+    public void UpdateAppearance(Entity<LegacySolutionComponent, AppearanceComponent?> soln)
     {
         var (uid, comp, appearanceComponent) = soln;
         var solution = comp.Solution;
@@ -345,7 +345,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="solutionHolder"></param>
     /// <param name="quantity">the volume of solution to remove.</param>
     /// <returns>The solution that was removed.</returns>
-    public Solution SplitSolution(Entity<SolutionComponent> soln, FixedPoint2 quantity)
+    public Solution SplitSolution(Entity<LegacySolutionComponent> soln, FixedPoint2 quantity)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -355,7 +355,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         return splitSol;
     }
 
-    public Solution SplitStackSolution(Entity<SolutionComponent> soln, FixedPoint2 quantity, int stackCount)
+    public Solution SplitStackSolution(Entity<LegacySolutionComponent> soln, FixedPoint2 quantity, int stackCount)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -369,7 +369,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <summary>
     /// Splits a solution without the specified reagent(s).
     /// </summary>
-    public Solution SplitSolutionWithout(Entity<SolutionComponent> soln, FixedPoint2 quantity, params string[] reagents)
+    public Solution SplitSolutionWithout(Entity<LegacySolutionComponent> soln, FixedPoint2 quantity, params string[] reagents)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -379,7 +379,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         return splitSol;
     }
 
-    public void RemoveAllSolution(Entity<SolutionComponent> soln)
+    public void RemoveAllSolution(Entity<LegacySolutionComponent> soln)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -397,7 +397,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="targetUid">The entity containing the solution.</param>
     /// <param name="targetSolution">The solution to set the capacity of.</param>
     /// <param name="capacity">The value to set the capacity of the solution to.</param>
-    public void SetCapacity(Entity<SolutionComponent> soln, FixedPoint2 capacity)
+    public void SetCapacity(Entity<LegacySolutionComponent> soln, FixedPoint2 capacity)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -417,7 +417,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="reagentQuantity">The reagent to add.</param>
     /// <param name="acceptedQuantity">The amount of reagent successfully added.</param>
     /// <returns>If all the reagent could be added.</returns>
-    public bool TryAddReagent(Entity<SolutionComponent> soln, ReagentQuantity reagentQuantity, out FixedPoint2 acceptedQuantity, float? temperature = null)
+    public bool TryAddReagent(Entity<LegacySolutionComponent> soln, ReagentQuantity reagentQuantity, out FixedPoint2 acceptedQuantity, float? temperature = null)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -452,7 +452,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="quantity">The amount of reagent to add.</param>
     /// <returns>If all the reagent could be added.</returns>
     [PublicAPI]
-    public bool TryAddReagent(Entity<SolutionComponent> soln, string prototype, FixedPoint2 quantity, float? temperature = null, ReagentData? data = null)
+    public bool TryAddReagent(Entity<LegacySolutionComponent> soln, string prototype, FixedPoint2 quantity, float? temperature = null, ReagentData? data = null)
         => TryAddReagent(soln, new ReagentQuantity(prototype, quantity, data), out _, temperature);
 
     /// <summary>
@@ -464,7 +464,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="quantity">The amount of reagent to add.</param>
     /// <param name="acceptedQuantity">The amount of reagent successfully added.</param>
     /// <returns>If all the reagent could be added.</returns>
-    public bool TryAddReagent(Entity<SolutionComponent> soln, string prototype, FixedPoint2 quantity, out FixedPoint2 acceptedQuantity, float? temperature = null, ReagentData? data = null)
+    public bool TryAddReagent(Entity<LegacySolutionComponent> soln, string prototype, FixedPoint2 quantity, out FixedPoint2 acceptedQuantity, float? temperature = null, ReagentData? data = null)
     {
         var reagent = new ReagentQuantity(prototype, quantity, data);
         return TryAddReagent(soln, reagent, out acceptedQuantity, temperature);
@@ -479,7 +479,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="quantity">The amount of reagent to add.</param>
     /// <param name="acceptedQuantity">The amount of reagent successfully added.</param>
     /// <returns>If all the reagent could be added.</returns>
-    public bool TryAddReagent(Entity<SolutionComponent> soln, ReagentId reagentId, FixedPoint2 quantity, out FixedPoint2 acceptedQuantity, float? temperature = null)
+    public bool TryAddReagent(Entity<LegacySolutionComponent> soln, ReagentId reagentId, FixedPoint2 quantity, out FixedPoint2 acceptedQuantity, float? temperature = null)
     {
         var quant = new ReagentQuantity(reagentId, quantity);
         return TryAddReagent(soln, quant, out acceptedQuantity, temperature);
@@ -492,7 +492,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="container">Solution container from which we are removing reagent</param>
     /// <param name="reagentQuantity">The reagent to remove.</param>
     /// <returns>If the reagent to remove was found in the container.</returns>
-    public bool RemoveReagent(Entity<SolutionComponent> soln, ReagentQuantity reagentQuantity)
+    public bool RemoveReagent(Entity<LegacySolutionComponent> soln, ReagentQuantity reagentQuantity)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -513,7 +513,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="prototype">The Id of the reagent to remove.</param>
     /// <param name="quantity">The amount of reagent to remove.</param>
     /// <returns>If the reagent to remove was found in the container.</returns>
-    public bool RemoveReagent(Entity<SolutionComponent> soln, string prototype, FixedPoint2 quantity, ReagentData? data = null)
+    public bool RemoveReagent(Entity<LegacySolutionComponent> soln, string prototype, FixedPoint2 quantity, ReagentData? data = null)
     {
         return RemoveReagent(soln, new ReagentQuantity(prototype, quantity, data));
     }
@@ -526,7 +526,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="reagentId">The reagent to remove.</param>
     /// <param name="quantity">The amount of reagent to remove.</param>
     /// <returns>If the reagent to remove was found in the container.</returns>
-    public bool RemoveReagent(Entity<SolutionComponent> soln, ReagentId reagentId, FixedPoint2 quantity)
+    public bool RemoveReagent(Entity<LegacySolutionComponent> soln, ReagentId reagentId, FixedPoint2 quantity)
     {
         return RemoveReagent(soln, new ReagentQuantity(reagentId, quantity));
     }
@@ -539,7 +539,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="source">source solution</param>
     /// <param name="target">target solution</param>
     /// <param name="quantity">quantity of solution to move from source to target. If this is a negative number, the source & target roles are reversed.</param>
-    public bool TryTransferSolution(Entity<SolutionComponent> soln, Solution source, FixedPoint2 quantity)
+    public bool TryTransferSolution(Entity<LegacySolutionComponent> soln, Solution source, FixedPoint2 quantity)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -566,7 +566,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     ///  <param name="targetSolution">entity holding targetSolution</param>
     /// <param name="toAdd">solution being added</param>
     /// <returns>If the solution could be added.</returns>
-    public bool TryAddSolution(Entity<SolutionComponent> soln, Solution toAdd)
+    public bool TryAddSolution(Entity<LegacySolutionComponent> soln, Solution toAdd)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -587,7 +587,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="targetSolution">The solution being added to.</param>
     /// <param name="toAdd">The solution being added to <paramref cref="targetSolution"/></param>
     /// <returns>The quantity of the solution actually added.</returns>
-    public FixedPoint2 AddSolution(Entity<SolutionComponent> soln, Solution toAdd)
+    public FixedPoint2 AddSolution(Entity<LegacySolutionComponent> soln, Solution toAdd)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -611,7 +611,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="targetSolution">The solution being added to.</param>
     /// <param name="toAdd">The solution being added to <paramref cref="targetSolution"/></param>
     /// <returns>Whether any reagents were added to the solution.</returns>
-    public bool ForceAddSolution(Entity<SolutionComponent> soln, Solution toAdd)
+    public bool ForceAddSolution(Entity<LegacySolutionComponent> soln, Solution toAdd)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -635,7 +635,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// If the combined volume is below this an empty solution is returned.</param>
     /// <param name="overflowingSolution">Solution that exceeded overflowThreshold</param>
     /// <returns>Whether any reagents were added to <paramref cref="targetSolution"/>.</returns>
-    public bool TryMixAndOverflow(Entity<SolutionComponent> soln, Solution toAdd, FixedPoint2 overflowThreshold, [MaybeNullWhen(false)] out Solution overflowingSolution)
+    public bool TryMixAndOverflow(Entity<LegacySolutionComponent> soln, Solution toAdd, FixedPoint2 overflowThreshold, [MaybeNullWhen(false)] out Solution overflowingSolution)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -659,7 +659,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="solution">The solution to remove reagents from.</param>
     /// <param name="quantity">The amount to remove from every reagent in the solution.</param>
     /// <returns>A new solution containing every removed reagent from the original solution.</returns>
-    public Solution RemoveEachReagent(Entity<SolutionComponent> soln, FixedPoint2 quantity)
+    public Solution RemoveEachReagent(Entity<LegacySolutionComponent> soln, FixedPoint2 quantity)
     {
         var (uid, comp) = soln;
         var solution = comp.Solution;
@@ -691,7 +691,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="owner">The entity in which the solution is located.</param>
     /// <param name="solution">The solution to set the temperature of.</param>
     /// <param name="temperature">The new value to set the temperature to.</param>
-    public void SetTemperature(Entity<SolutionComponent> soln, float temperature)
+    public void SetTemperature(Entity<LegacySolutionComponent> soln, float temperature)
     {
         var (_, comp) = soln;
         var solution = comp.Solution;
@@ -709,7 +709,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="owner">The entity in which the solution is located.</param>
     /// <param name="solution">The solution to set the thermal energy of.</param>
     /// <param name="thermalEnergy">The new value to set the thermal energy to.</param>
-    public void SetThermalEnergy(Entity<SolutionComponent> soln, float thermalEnergy)
+    public void SetThermalEnergy(Entity<LegacySolutionComponent> soln, float thermalEnergy)
     {
         var (_, comp) = soln;
         var solution = comp.Solution;
@@ -725,7 +725,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     /// <param name="owner">The entity in which the solution is located.</param>
     /// <param name="solution">The solution to set the thermal energy of.</param>
     /// <param name="thermalEnergy">The new value to set the thermal energy to.</param>
-    public void AddThermalEnergy(Entity<SolutionComponent> soln, float thermalEnergy)
+    public void AddThermalEnergy(Entity<LegacySolutionComponent> soln, float thermalEnergy)
     {
         var (_, comp) = soln;
         var solution = comp.Solution;
@@ -742,17 +742,17 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
 
     #region Event Handlers
 
-    private void OnComponentInit(Entity<SolutionComponent> entity, ref ComponentInit args)
+    private void OnComponentInit(Entity<LegacySolutionComponent> entity, ref ComponentInit args)
     {
         entity.Comp.Solution.ValidateSolution();
     }
 
-    private void OnSolutionStartup(Entity<SolutionComponent> entity, ref ComponentStartup args)
+    private void OnSolutionStartup(Entity<LegacySolutionComponent> entity, ref ComponentStartup args)
     {
         UpdateChemicals(entity);
     }
 
-    private void OnSolutionShutdown(Entity<SolutionComponent> entity, ref ComponentShutdown args)
+    private void OnSolutionShutdown(Entity<LegacySolutionComponent> entity, ref ComponentShutdown args)
     {
         RemoveAllSolution(entity);
     }
@@ -1042,7 +1042,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     public bool EnsureSolutionEntity(
         Entity<SolutionContainerManagerComponent?> entity,
         string name,
-        [NotNullWhen(true)] out Entity<SolutionComponent>? solutionEntity,
+        [NotNullWhen(true)] out Entity<LegacySolutionComponent>? solutionEntity,
         FixedPoint2 maxVol = default) =>
         EnsureSolutionEntity(entity, name, out _, out solutionEntity, maxVol);
 
@@ -1050,7 +1050,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         Entity<SolutionContainerManagerComponent?> entity,
         string name,
         out bool existed,
-        [NotNullWhen(true)] out Entity<SolutionComponent>? solutionEntity,
+        [NotNullWhen(true)] out Entity<LegacySolutionComponent>? solutionEntity,
         FixedPoint2 maxVol = default,
         Solution? prototype = null
         )
@@ -1076,25 +1076,25 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         }
 
         var needsInit = false;
-        SolutionComponent solutionComp;
+        LegacySolutionComponent legacySolutionComp;
         if (solutionSlot.ContainedEntity is not { } solutionId)
         {
             if (NetManager.IsClient)
                 return false;
             prototype ??= new() { MaxVolume = maxVol };
             prototype.Name = name;
-            (solutionId, solutionComp, _) = SpawnSolutionUninitialized(solutionSlot, name, maxVol, prototype);
+            (solutionId, legacySolutionComp, _) = SpawnSolutionUninitialized(solutionSlot, name, maxVol, prototype);
             existed = false;
             needsInit = true;
             Dirty(uid, container);
         }
         else
         {
-            solutionComp = Comp<SolutionComponent>(solutionId);
+            legacySolutionComp = Comp<LegacySolutionComponent>(solutionId);
             DebugTools.Assert(TryComp(solutionId, out ContainedSolutionComponent? relation) && relation.Container == uid && relation.ContainerName == name);
-            DebugTools.Assert(solutionComp.Solution.Name == name);
+            DebugTools.Assert(legacySolutionComp.Solution.Name == name);
 
-            var solution = solutionComp.Solution;
+            var solution = legacySolutionComp.Solution;
             solution.MaxVolume = FixedPoint2.Max(solution.MaxVolume, maxVol);
 
             // Depending on MapInitEvent order some systems can ensure solution empty solutions and conflict with the prototype solutions.
@@ -1102,12 +1102,12 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
             if (prototype is { Volume.Value: > 0 })
                 solution.AddSolution(prototype, PrototypeManager);
 
-            Dirty(solutionId, solutionComp);
+            Dirty(solutionId, legacySolutionComp);
         }
 
         if (needsInit)
             EntityManager.InitializeAndStartEntity(solutionId, Transform(solutionId).MapID);
-        solutionEntity = (solutionId, solutionComp);
+        solutionEntity = (solutionId, legacySolutionComp);
         return true;
     }
 
@@ -1138,12 +1138,12 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         return solution;
     }
 
-    private Entity<SolutionComponent, ContainedSolutionComponent> SpawnSolutionUninitialized(ContainerSlot container, string name, FixedPoint2 maxVol, Solution prototype)
+    private Entity<LegacySolutionComponent, ContainedSolutionComponent> SpawnSolutionUninitialized(ContainerSlot container, string name, FixedPoint2 maxVol, Solution prototype)
     {
         var coords = new EntityCoordinates(container.Owner, Vector2.Zero);
         var uid = EntityManager.CreateEntityUninitialized(null, coords, null);
 
-        var solution = new SolutionComponent() { Solution = prototype };
+        var solution = new LegacySolutionComponent() { Solution = prototype };
         AddComp(uid, solution);
 
         var relation = new ContainedSolutionComponent() { Container = container.Owner, ContainerName = name };
@@ -1156,7 +1156,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     }
 
     public void AdjustDissolvedReagent(
-        Entity<SolutionComponent> dissolvedSolution,
+        Entity<LegacySolutionComponent> dissolvedSolution,
         FixedPoint2 volume,
         ReagentId reagent,
         float concentrationChange)
@@ -1177,7 +1177,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         UpdateChemicals(dissolvedSolution);
     }
 
-    public FixedPoint2 GetReagentQuantityFromConcentration(Entity<SolutionComponent> dissolvedSolution,
+    public FixedPoint2 GetReagentQuantityFromConcentration(Entity<LegacySolutionComponent> dissolvedSolution,
         FixedPoint2 volume,float concentration)
     {
         var dissolvedSol = dissolvedSolution.Comp.Solution;
@@ -1187,7 +1187,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         return concentration * volume;
     }
 
-    public float GetReagentConcentration(Entity<SolutionComponent> dissolvedSolution,
+    public float GetReagentConcentration(Entity<LegacySolutionComponent> dissolvedSolution,
         FixedPoint2 volume, ReagentId dissolvedReagent)
     {
         var dissolvedSol = dissolvedSolution.Comp.Solution;
@@ -1199,7 +1199,7 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     }
 
     public FixedPoint2 ClampReagentAmountByConcentration(
-        Entity<SolutionComponent> dissolvedSolution,
+        Entity<LegacySolutionComponent> dissolvedSolution,
         FixedPoint2 volume,
         ReagentId dissolvedReagent,
         FixedPoint2 dissolvedReagentAmount,

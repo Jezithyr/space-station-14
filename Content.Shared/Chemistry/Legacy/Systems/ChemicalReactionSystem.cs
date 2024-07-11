@@ -89,7 +89,7 @@ namespace Content.Shared.Chemistry.Reaction
         /// <param name="reaction">The reaction to check.</param>
         /// <param name="lowestUnitReactions">How many times this reaction can occur.</param>
         /// <returns></returns>
-        private bool CanReact(Entity<SolutionComponent> soln, ReactionPrototype reaction, ReactionMixerComponent? mixerComponent, out FixedPoint2 lowestUnitReactions)
+        private bool CanReact(Entity<LegacySolutionComponent> soln, ReactionPrototype reaction, ReactionMixerComponent? mixerComponent, out FixedPoint2 lowestUnitReactions)
         {
             var solution = soln.Comp.Solution;
 
@@ -159,7 +159,7 @@ namespace Content.Shared.Chemistry.Reaction
         ///     Perform a reaction on a solution. This assumes all reaction criteria are met.
         ///     Removes the reactants from the solution, adds products, and returns a list of products.
         /// </summary>
-        private List<string> PerformReaction(Entity<SolutionComponent> soln, ReactionPrototype reaction, FixedPoint2 unitReactions)
+        private List<string> PerformReaction(Entity<LegacySolutionComponent> soln, ReactionPrototype reaction, FixedPoint2 unitReactions)
         {
             var (uid, comp) = soln;
             var solution = comp.Solution;
@@ -196,7 +196,7 @@ namespace Content.Shared.Chemistry.Reaction
             return products;
         }
 
-        private void OnReaction(Entity<SolutionComponent> soln, ReactionPrototype reaction, ReagentPrototype? reagent, FixedPoint2 unitReactions)
+        private void OnReaction(Entity<LegacySolutionComponent> soln, ReactionPrototype reaction, ReagentPrototype? reagent, FixedPoint2 unitReactions)
         {
             var args = new EntityEffectReagentArgs(soln, EntityManager, null, soln.Comp.Solution, unitReactions, reagent, null, 1f);
 
@@ -228,7 +228,7 @@ namespace Content.Shared.Chemistry.Reaction
         ///     Removes the reactants from the solution, then returns a solution with all products.
         ///     WARNING: Does not trigger reactions between solution and new products.
         /// </summary>
-        private bool ProcessReactions(Entity<SolutionComponent> soln, SortedSet<ReactionPrototype> reactions, ReactionMixerComponent? mixerComponent)
+        private bool ProcessReactions(Entity<LegacySolutionComponent> soln, SortedSet<ReactionPrototype> reactions, ReactionMixerComponent? mixerComponent)
         {
             HashSet<ReactionPrototype> toRemove = new();
             List<string>? products = null;
@@ -267,7 +267,7 @@ namespace Content.Shared.Chemistry.Reaction
         /// <summary>
         ///     Continually react a solution until no more reactions occur, with a volume constraint.
         /// </summary>
-        public void FullyReactSolution(Entity<SolutionComponent> soln, ReactionMixerComponent? mixerComponent = null)
+        public void FullyReactSolution(Entity<LegacySolutionComponent> soln, ReactionMixerComponent? mixerComponent = null)
         {
             // construct the initial set of reactions to check.
             SortedSet<ReactionPrototype> reactions = new();
@@ -296,10 +296,10 @@ namespace Content.Shared.Chemistry.Reaction
     ///     Some solution containers (e.g., bloodstream, smoke, foam) use this to block certain reactions from occurring.
     /// </reamrks>
     [ByRefEvent]
-    public record struct ReactionAttemptEvent(ReactionPrototype Reaction, Entity<SolutionComponent> Solution)
+    public record struct ReactionAttemptEvent(ReactionPrototype Reaction, Entity<LegacySolutionComponent> Solution)
     {
         public readonly ReactionPrototype Reaction = Reaction;
-        public readonly Entity<SolutionComponent> Solution = Solution;
+        public readonly Entity<LegacySolutionComponent> Solution = Solution;
         public bool Cancelled = false;
     }
 }

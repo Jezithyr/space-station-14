@@ -12,7 +12,7 @@ namespace Content.Shared.Chemistry.Components;
 /// <para>Once reagents and materials have been merged this component should be depricated in favor of using a combination of <see cref="PhysicalCompositionComponent"/> and <see cref="Content.Server.Temperature.Components.TemperatureComponent"/>. May require minor reworks to both.</para>
 /// </remarks>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class SolutionComponent : Component
+public sealed partial class LegacySolutionComponent : Component
 {
     /// <summary>
     /// <para>The reagents the entity is composed of and their temperature.</para>

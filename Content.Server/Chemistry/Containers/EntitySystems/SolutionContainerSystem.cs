@@ -32,7 +32,7 @@ public sealed partial class SolutionContainerSystem : SharedSolutionContainerSys
     }
 
     [Obsolete("This is being depreciated. Use the ensure methods in SharedSolutionContainerSystem instead!")]
-    public Entity<SolutionComponent> EnsureSolutionEntity(
+    public Entity<LegacySolutionComponent> EnsureSolutionEntity(
         Entity<SolutionContainerManagerComponent?> entity,
         string name,
         FixedPoint2 maxVol,

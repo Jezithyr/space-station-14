@@ -244,7 +244,7 @@ public sealed class InjectorSystem : SharedInjectorSystem
     }
 
     private bool TryInject(Entity<InjectorComponent> injector, EntityUid targetEntity,
-        Entity<SolutionComponent> targetSolution, EntityUid user, bool asRefill)
+        Entity<LegacySolutionComponent> targetSolution, EntityUid user, bool asRefill)
     {
         if (!SolutionContainers.TryGetSolution(injector.Owner, injector.Comp.SolutionName, out var soln,
                 out var solution) || solution.Volume == 0)
@@ -315,7 +315,7 @@ public sealed class InjectorSystem : SharedInjectorSystem
     }
 
     private bool TryDraw(Entity<InjectorComponent> injector, Entity<BloodstreamComponent?> target,
-        Entity<SolutionComponent> targetSolution, EntityUid user)
+        Entity<LegacySolutionComponent> targetSolution, EntityUid user)
     {
         if (!SolutionContainers.TryGetSolution(injector.Owner, injector.Comp.SolutionName, out var soln,
                 out var solution) || solution.AvailableVolume == 0)
@@ -361,7 +361,7 @@ public sealed class InjectorSystem : SharedInjectorSystem
     }
 
     private void DrawFromBlood(Entity<InjectorComponent> injector, Entity<BloodstreamComponent> target,
-        Entity<SolutionComponent> injectorSolution, FixedPoint2 transferAmount, EntityUid user)
+        Entity<LegacySolutionComponent> injectorSolution, FixedPoint2 transferAmount, EntityUid user)
     {
         var drawAmount = (float) transferAmount;
 

@@ -62,7 +62,7 @@ public sealed partial class ReactionMixerSystem : EntitySystem
         RaiseLocalEvent(entity, afterMixingEvent);
     }
 
-    private bool MixAttempt(EntityUid ent, EntityUid target, out Entity<SolutionComponent>? solution)
+    private bool MixAttempt(EntityUid ent, EntityUid target, out Entity<LegacySolutionComponent>? solution)
     {
         solution = null;
         var mixAttemptEvent = new MixingAttemptEvent(ent);

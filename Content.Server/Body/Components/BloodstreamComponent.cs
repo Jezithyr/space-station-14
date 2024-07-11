@@ -151,13 +151,13 @@ namespace Content.Server.Body.Components
         ///     Internal solution for blood storage
         /// </summary>
         [DataField]
-        public Entity<SolutionComponent>? BloodSolution = null;
+        public Entity<LegacySolutionComponent>? BloodSolution = null;
 
         /// <summary>
         ///     Internal solution for reagent storage
         /// </summary>
         [DataField]
-        public Entity<SolutionComponent>? ChemicalSolution = null;
+        public Entity<LegacySolutionComponent>? ChemicalSolution = null;
 
         /// <summary>
         ///     Temporary blood solution.
@@ -165,7 +165,7 @@ namespace Content.Server.Body.Components
         ///     solution hits a certain cap, the blood is actually spilled as a puddle.
         /// </summary>
         [DataField]
-        public Entity<SolutionComponent>? TemporarySolution = null;
+        public Entity<LegacySolutionComponent>? TemporarySolution = null;
 
         /// <summary>
         /// Variable that stores the amount of status time added by having a low blood level.

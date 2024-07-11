@@ -148,7 +148,7 @@ public sealed class HypospraySystem : SharedHypospraySystem
         return true;
     }
 
-    private bool TryDraw(Entity<HyposprayComponent> entity, Entity<BloodstreamComponent?> target, Entity<SolutionComponent> targetSolution, EntityUid user)
+    private bool TryDraw(Entity<HyposprayComponent> entity, Entity<BloodstreamComponent?> target, Entity<LegacySolutionComponent> targetSolution, EntityUid user)
     {
         if (!_solutionContainers.TryGetSolution(entity.Owner, entity.Comp.SolutionName, out var soln,
                 out var solution) || solution.AvailableVolume == 0)

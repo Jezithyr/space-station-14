@@ -98,5 +98,5 @@ public sealed partial class ReagentProducerAnomalyComponent : Component
     /// Solution where the substance is generated
     /// </summary>
     [DataField("solutionRef")]
-    public Entity<SolutionComponent>? Solution = null;
+    public Entity<LegacySolutionComponent>? Solution = null;
 }

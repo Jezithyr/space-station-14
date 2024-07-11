@@ -21,7 +21,7 @@ public sealed partial class DrainComponent : Component
     public const string PlungerTag = "Plunger";
 
     [DataField]
-    public Entity<SolutionComponent>? Solution = null;
+    public Entity<LegacySolutionComponent>? Solution = null;
 
     [DataField("accumulator")]
     public float Accumulator = 0f;

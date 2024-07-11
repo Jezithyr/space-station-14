@@ -1,9 +1,7 @@
-﻿using Content.Shared.Chemistry.Reaction;
-using Content.Shared.Database;
+﻿using Content.Shared.Database;
 using Content.Shared.EntityEffects;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Audio;
-using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Chemistry.Components;
 
@@ -19,12 +17,6 @@ public sealed partial class ReactionDefinitionComponent : Component
 
     [DataField]
     public Dictionary<string, ReactantData> Reactants = new();
-
-    /// <summary>
-    ///     The required mixing categories for an entity to mix the solution with for the reaction to occur
-    /// </summary>
-    [DataField]
-    public List<ProtoId<MixingCategoryPrototype>>? MixingCategories;
 
     /// <summary>
     /// Reagents created when the reaction occurs.

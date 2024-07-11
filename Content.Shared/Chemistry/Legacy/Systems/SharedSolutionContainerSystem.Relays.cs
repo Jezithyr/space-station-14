@@ -64,9 +64,9 @@ public record struct SolutionRelayEvent<TEvent>(TEvent Event, EntityUid Containe
 /// <param name="SolutionEnt">The solution entity that the event is being relayed to.</param>
 /// <param name="Name">The name of the solution entity that the event is being relayed to.</param>
 [ByRefEvent]
-public record struct SolutionContainerRelayEvent<TEvent>(TEvent Event, Entity<SolutionComponent> SolutionEnt, string Name)
+public record struct SolutionContainerRelayEvent<TEvent>(TEvent Event, Entity<LegacySolutionComponent> SolutionEnt, string Name)
 {
-    public readonly Entity<SolutionComponent> SolutionEnt = SolutionEnt;
+    public readonly Entity<LegacySolutionComponent> SolutionEnt = SolutionEnt;
     public readonly string Name = Name;
     public TEvent Event = Event;
 }

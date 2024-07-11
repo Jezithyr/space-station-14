@@ -42,7 +42,7 @@ namespace Content.IntegrationTests.Tests.Chemistry
                 Console.WriteLine($"Testing {reactionPrototype.ID}");
 
                 EntityUid beaker = default;
-                Entity<SolutionComponent>? solutionEnt = default!;
+                Entity<LegacySolutionComponent>? solutionEnt = default!;
                 Solution solution = null;
 
                 await server.WaitAssertion(() =>

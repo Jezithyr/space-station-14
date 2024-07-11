@@ -1,7 +1,7 @@
 ﻿namespace Content.Shared.Chemistry.Components;
 
 [RegisterComponent]
-public sealed partial class ReactionTemperatureRequirementComponent : Component
+public sealed partial class RequiresReactionTemperatureComponent : Component
 {
     /// <summary>
     ///     The minimum temperature the reaction can occur at.
