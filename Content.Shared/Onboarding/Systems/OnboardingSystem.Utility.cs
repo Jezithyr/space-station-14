@@ -1,8 +1,8 @@
 ﻿using Robust.Shared.NamedEvents;
 
-namespace Content.Client.Onboarding.Systems;
+namespace Content.Shared.Onboarding.Systems;
 
-public sealed partial class OnboardingSystem
+public abstract partial class SharedOnboardingSystem
 {
     private void CreateTriggerId(string id, string category = NamedEventCategory)
     {

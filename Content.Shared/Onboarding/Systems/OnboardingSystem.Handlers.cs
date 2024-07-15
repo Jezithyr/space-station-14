@@ -1,9 +1,10 @@
-﻿
+﻿using Content.Shared.Onboarding;
 using Robust.Shared.NamedEvents;
+using Serilog;
 
-namespace Content.Client.Onboarding.Systems;
+namespace Content.Shared.Onboarding.Systems;
 
-public sealed partial class OnboardingSystem
+public abstract partial class SharedOnboardingSystem
 {
     private void InitTelemetryHandlers()
     {
