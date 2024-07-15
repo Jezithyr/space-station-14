@@ -1,0 +1,6 @@
+﻿- type: onboardingConfig
+  id: WizDenOnboarding
+  primaryOptions:
+  - WizdenBasicOnboarding
+  - WizdenStandardOnboarding
+  - WizdenVeteranOnboarding

@@ -1,0 +1,8 @@
+﻿- type: onboardingFlow
+  id: WizdenBasicOnboarding
+
+- type: onboardingFlow
+  id: WizdenStandardOnboarding
+
+- type: onboardingFlow
+  id: WizdenVeteranOnboarding
