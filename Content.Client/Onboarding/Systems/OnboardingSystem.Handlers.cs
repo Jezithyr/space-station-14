@@ -1,5 +1,4 @@
-﻿
-using Robust.Shared.NamedEvents;
+﻿using Robust.Shared.NamedEvents;
 
 namespace Content.Client.Onboarding.Systems;
 

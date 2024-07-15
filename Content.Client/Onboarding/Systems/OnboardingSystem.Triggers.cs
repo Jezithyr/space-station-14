@@ -1,5 +1,5 @@
-﻿using Content.Client.Onboarding.Components;
-using Content.Shared.Movement.Events;
+﻿using Content.Shared.Movement.Events;
+using Content.Shared.Onboarding.Components;
 
 namespace Content.Client.Onboarding.Systems;
 

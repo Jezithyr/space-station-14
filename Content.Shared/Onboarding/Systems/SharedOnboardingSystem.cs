@@ -1,6 +1,4 @@
-﻿
-
-namespace Content.Shared.Onboarding.Systems;
+﻿namespace Content.Shared.Onboarding.Systems;
 public abstract partial class SharedOnboardingSystem : EntitySystem
 {
     public const string NamedEventCategory = "Onboarding";

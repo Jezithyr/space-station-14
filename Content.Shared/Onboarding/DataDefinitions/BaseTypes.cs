@@ -1,4 +1,4 @@
-﻿namespace Content.Client.Onboarding.DataDefinitions;
+﻿namespace Content.Shared.Onboarding.DataDefinitions;
 
 [ImplicitDataRecord]
 public abstract class OnboardingPrompt;

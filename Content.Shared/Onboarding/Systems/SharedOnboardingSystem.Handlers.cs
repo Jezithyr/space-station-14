@@ -1,5 +1,4 @@
 ﻿using Robust.Shared.NamedEvents;
-using Serilog;
 
 namespace Content.Shared.Onboarding.Systems;
 
