@@ -7,11 +7,5 @@ public abstract partial class SharedOnboardingSystem
 {
     private void InitTelemetryTriggers()
     {
-        SubscribeLocalEvent<OnboardingStateComponent, MoveInputEvent>(OnMoveInputChanged);
-    }
-
-    private void OnMoveInputChanged(Entity<OnboardingStateComponent> ent, ref MoveInputEvent args)
-    {
-        RaisePlayerTrigger(MoveInputId, ent, true);
     }
 }

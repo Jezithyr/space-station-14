@@ -1,6 +1,6 @@
 ﻿using Robust.Shared.Prototypes;
 
-namespace Content.Client.Onboarding.Prototypes;
+namespace Content.Shared.Onboarding.Prototypes;
 
 [Prototype]
 public sealed partial class OnboardingStepPrototype : IPrototype

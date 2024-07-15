@@ -17,7 +17,7 @@ public sealed partial class OnboardingSystem
     public void RaisePlayerTrigger(NamedEventId telemetryId, EntityUid uid, bool oneShot = false)
     {
         var ev = new OnboardingTriggerEvent(uid);
-        RaisePlayerNamedEvent(telemetryId, uid ,ref ev, oneShot);
+        RaiseLocalPlayerNamedEvent(telemetryId, uid ,ref ev, oneShot);
     }
 
     public void ResetOneShotPlayerTrigger(NamedEventId id)

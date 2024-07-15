@@ -1,19 +1,12 @@
-﻿using Robust.Shared.NamedEvents;
-using Robust.Shared.NamedEvents.Systems;
+﻿using Content.Shared.Onboarding.Systems;
+using Robust.Shared.NamedEvents;
 
 namespace Content.Client.Onboarding.Systems;
-public sealed partial class OnboardingSystem : NamedEventSystem
+public sealed partial class OnboardingSystem : SharedOnboardingSystem
 {
-    public const string NamedEventCategory = "Onboarding";
     public static NamedEventId MoveInputId = ("MoveInput", NamedEventCategory);
-    protected override void DefineNamedEventIds(bool isServer)
+    protected override void RegisterNamedEventIds(bool isServer)
     {
         CreateTriggerId(MoveInputId);
-    }
-
-    public override void Initialize()
-    {
-        InitTelemetryHandlers();
-        InitTelemetryTriggers();
     }
 }
