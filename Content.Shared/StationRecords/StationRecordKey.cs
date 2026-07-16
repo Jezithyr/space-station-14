@@ -7,13 +7,13 @@ namespace Content.Shared.StationRecords;
 /// but when you already know the station just store the id itself.
 /// </summary>
 [DataRecord]
-public readonly partial struct StationRecordKey : IEquatable<StationRecordKey>
+public partial struct StationRecordKey : IEquatable<StationRecordKey>
 {
     [DataField]
-    public readonly uint Id;
+    public uint Id;
 
     [DataField("station")]
-    public readonly EntityUid OriginStation;
+    public EntityUid OriginStation;
 
     public static StationRecordKey Invalid = default;
 
